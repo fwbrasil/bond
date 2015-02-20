@@ -1,18 +1,15 @@
 package net.fwbrasil.bond
 
-trait Validator[T, V] {
+trait Validator {
 
-  def result[U <% T](value: U): Result[U with V] =
-    if (valid(value))
-      Valid(value.asInstanceOf[U with V])
-    else
-      Invalid(value.asInstanceOf[U with V], List(violation(value)))
+  protected def validate[V] = new {
+    def apply[T](value: T)(valid: Boolean, description: String = s"invalid value: $value"): Result[T with V] =
+      if (valid)
+        Valid(cast[T, V](value))
+      else
+        Invalid(cast[T, V](value), List(Violation(cast[T, V](value), description)))
+  }
 
-  def valid(value: T): Boolean
-
-  private def violation(value: T) =
-    s"Invalid $description: $value."
-
-  protected def description =
-    this.getClass.getSimpleName.split('$').last
+  private def cast[T, V](value: T) =
+    value.asInstanceOf[T with V]
 }

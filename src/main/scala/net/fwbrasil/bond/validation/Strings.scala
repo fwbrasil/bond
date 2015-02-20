@@ -3,18 +3,18 @@ package net.fwbrasil.bond.validation
 import shapeless._, syntax.singleton._
 import shapeless._
 import syntax.singleton._
+
 import net.fwbrasil.bond.Validator
 
 trait Strings {
+  this: Validator =>
+
+  private val emailPattern =
+    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
 
   trait Email
-  object Email extends Validator[String, Email] {
-    def valid(value: String) =
-      value.matches(emailPattern)
-
-    private def emailPattern =
-      "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-  }
+  def Email[U <% String](value: U) =
+    validate[Email](value)(value.matches(emailPattern))
 
   //  trait StartsWith[S]
   //

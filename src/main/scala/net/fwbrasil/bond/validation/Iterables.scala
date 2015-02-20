@@ -3,15 +3,13 @@ package net.fwbrasil.bond.validation
 import net.fwbrasil.bond.Validator
 
 trait Iterables {
+  this: Validator =>
 
   trait NonEmpty
-  object NonEmpty extends Validator[Iterable[_], NonEmpty] {
-    def valid(value: Iterable[_]) = value.nonEmpty
-  }
+  def NonEmpty[U <% Iterable[_]](value: U) =
+    validate[NonEmpty](value)(value.nonEmpty)
 
   trait Empty
-  object Empty extends Validator[Iterable[_], Empty] {
-    def valid(value: Iterable[_]) = value.isEmpty
-  }
-
+  def Empty[U <% Iterable[_]](value: U) =
+    validate[Empty](value)(value.isEmpty)
 }

@@ -3,17 +3,16 @@ package net.fwbrasil.bond.validation
 import net.fwbrasil.bond.Validator
 
 trait Objects {
+  this: Validator =>
 
   trait IsNull
-  object IsNull extends Validator[String, IsNull] {
-    def valid(value: String) = value == null
-  }
+  def IsNull[U <% Any](value: U) =
+    validate[IsNull](value)(value == null)
 
   trait NotNull
-  object NotNull extends Validator[String, NotNull] {
-    def valid(value: String) = value != null
-  }
-  
+  def NotNull[U <% Any](value: U) =
+    validate[NotNull](value)(value != null)
+
   trait Or
   trait And
 }

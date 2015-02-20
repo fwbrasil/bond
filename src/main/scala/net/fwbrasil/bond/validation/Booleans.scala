@@ -2,15 +2,14 @@ package net.fwbrasil.bond.validation
 
 import net.fwbrasil.bond.Validator
 
-class Booleans {
+trait Booleans {
+  this: Validator =>
 
   trait False
-  object False extends Validator[Boolean, False] {
-    def valid(value: Boolean) = !value
-  }
+  def False[U <% Boolean](value: U) =
+    validate[False](value)(!value)
 
   trait True
-  object True extends Validator[Boolean, True] {
-    def valid(value: Boolean) = value
-  }
+  def True[U <% Boolean](value: U) =
+    validate[True](value)(value)
 }
