@@ -1,4 +1,4 @@
 Bond
 ====
 
-Type-safe design by contract for Scala.
+Type-safe validation for Scala
