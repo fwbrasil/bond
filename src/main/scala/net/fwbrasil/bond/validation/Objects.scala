@@ -13,4 +13,7 @@ trait Objects {
   object NotNull extends Validator[String, NotNull] {
     def valid(value: String) = value != null
   }
+  
+  trait Or
+  trait And
 }

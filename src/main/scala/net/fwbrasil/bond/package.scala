@@ -6,7 +6,8 @@ package object bond
   extends Booleans
   with Iterables
   with Objects
-  with Strings {
+  with Strings
+  with Numbers {
 
   def validate[T1, V1, U](
     v1: Validator[T1, V1])(value: U)(
@@ -27,4 +28,11 @@ package object bond
     v1: Validator[T1, V1], v2: Validator[T2, V2], v3: Validator[T3, V3], v4: Validator[T4, V4])(value: U)(
       implicit t1: U => T1, t2: U => T2, t3: U => T3, t4: U => T4): Result[U with V1 with V2 with V3 with V4] =
     validate(v1, v2, v3)(value).flatMap(validate(v4))
+    
+  for {
+    string <- validate(NonEmpty)("a")
+    email <- validate(Email)(string)
+  } yield {
+    string
+  }
 }
