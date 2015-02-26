@@ -2,26 +2,15 @@ name := "bond"
 
 organization := "net.fwbrasil"
 
-scalaVersion := "2.10.4"
-
-crossScalaVersions := Seq("2.10.4", "2.11.5")
+scalaVersion := "2.11.5"
 
 libraryDependencies += "org.specs2" %% "specs2" % "2.4.2" % "test"
 
 libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
 
-val shapeless = Def setting (
-    CrossVersion partialVersion scalaVersion.value match {
-    case Some((2, scalaMajor)) if scalaMajor >= 11 => 
-      "com.chuusai" %% "shapeless" % "2.0.0"
-    case Some((2, 10)) => 
-      "com.chuusai" %  "shapeless" % "2.0.0" cross CrossVersion.full
-  }
-)
+libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
-libraryDependencies ++= Seq(
-  shapeless.value
-)
+libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0"
 
 releaseSettings
 

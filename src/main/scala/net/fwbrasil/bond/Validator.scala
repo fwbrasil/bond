@@ -1,15 +1,30 @@
 package net.fwbrasil.bond
 
-trait Validator {
+import scala.language.experimental.macros
+import net.fwbrasil.bond.typelevel.Macros
+import shapeless._
+import syntax.singleton._
+import shapeless._
+import syntax.singleton._
 
-  protected def validate[V] = new {
-    def apply[T](value: T)(valid: Boolean, description: String = s"invalid value: $value"): Result[T with V] =
-      if (valid)
-        Valid(cast[T, V](value))
-      else
-        Invalid(cast[T, V](value), List(Violation(cast[T, V](value), description)))
-  }
+trait Validator[+T]
 
-  private def cast[T, V](value: T) =
-    value.asInstanceOf[T with V]
+class Validator0[T, V](f: T => Boolean) extends Validator[T] {
+
+  def validate[U <% T](value: U) =
+    resultFor(value).asInstanceOf[Result[U with V]]
+
+  def resultFor[U <% T](value: U) =
+    if (f(value))
+      Valid(value)
+    else
+      new Invalid(value, List(Violation(value, this)))
+}
+
+class Validator1[T, V[_]](f: (T, T) => Boolean) extends Validator[T] {
+
+  def apply[U <: T](w: Witness.Aux[U]) =
+    new Validator0[T, V[w.T]]((v: T) => f(w.value, v))
+
+  implicit def lift[U <: T, A, B](v: V[A]): U with V[B] = ???
 }

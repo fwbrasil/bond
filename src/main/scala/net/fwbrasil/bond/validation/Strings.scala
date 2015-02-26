@@ -1,40 +1,35 @@
 package net.fwbrasil.bond.validation
 
-import shapeless._, syntax.singleton._
 import shapeless._
 import syntax.singleton._
-
-import net.fwbrasil.bond.Validator
+import shapeless._
+import syntax.singleton._
+import net.fwbrasil.bond._
 
 trait Strings {
-  this: Validator =>
 
   private val emailPattern =
     "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
 
   trait Email
-  def Email[U <% String](value: U) =
-    validate[Email](value)(value.matches(emailPattern))
+  object Email extends Validator0[String, Email](_.matches(emailPattern))
 
-  //  trait StartsWith[S]
+  trait StartsWith[S]
+  object StartsWith extends Validator1[String, StartsWith](_.startsWith(_))
+
+  val v = StartsWith(Witness("a")).validate("b").get
+  val j: String with StartsWith[Witness.`"b"`.T] = v
+  val a: String with StartsWith[Witness.`"b"`.T] =
+    StartsWith.lift[v.type, Witness.`"a"`.T, Witness.`"b"`.T](v)
+
+  trait EndsWith
+  trait MatchesRegex
+
+  //  val a = StartsWith(Witness("aa"))("aa").get
   //
-  //  def startsWith[A <: String](s: Witness.Lt[A]): Validator[String, StartsWith[s.T]] =
-  //    new Validator[String, StartsWith[s.T]] {
-  //      def valid(value: String) =
-  //        value.startsWith(s.value)
-  //    }
-  //  def startsWith2[A <: String](s: A)(implicit w: Witness.Lt[A]): Validator[String, StartsWith[w.T]] =
-  //    new Validator[String, StartsWith[w.T]] {
-  //      def valid(value: String) =
-  //        value.startsWith(s)
-  //    }
+  //  def test(s: String with StartsWith[Witness.`"a"`.T]) = ???
   //
-  //  trait EndsWith
-  //  trait MatchesRegex
-  //  
-  //  final val test = Witness("a")
-  //  
-  //  val a = startsWith(test)
-  //  val c = startsWith2("b".narrow)
+  //  test(StartsWith(a))
 
 }
+
