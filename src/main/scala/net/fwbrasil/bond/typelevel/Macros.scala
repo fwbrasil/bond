@@ -10,16 +10,21 @@ import shapeless.SingletonTypeUtils
 class Macros(val c: blackbox.Context) extends SingletonTypeUtils {
   import c.universe._
 
-  def lift[V[_], A, U, B](value: c.Expr[V[A]])(
+  def lift[V[_], A, I, B, O](value: c.Expr[I with V[A]])(
     implicit v: WeakTypeTag[V[_]],
     a: WeakTypeTag[A],
-    u: WeakTypeTag[U],
-    b: WeakTypeTag[B]): c.Expr[U with V[B]] = {
+    i: WeakTypeTag[I],
+    b: WeakTypeTag[B],
+    o: WeakTypeTag[O]): c.Expr[O] = {
     //    val a = value.actualType.baseType(value.actualType.baseClasses(1))
     //    val w = weakTypeOf[T]
     //    val b = a.typeArgs.filter(_ => true)
     //    val ConstantType(Constant(x: String)) = a.typeArgs.head 
 //    c.warning(c.enclosingPosition, showRaw(a))
+//    c.warning(c.enclosingPosition, showRaw(u))
+//    c.warning(c.enclosingPosition, showRaw(b))
+    println(showRaw(a)) 
+    println(showRaw(value.actualType.baseType(value.actualType.baseClasses(1))))
 
     //    val q"${tpeString: String}" = tpeSelector
     //    val tpe =
@@ -29,7 +34,7 @@ class Macros(val c: blackbox.Context) extends SingletonTypeUtils {
     //    typeCarrier(tpe)
 
     reify {
-      value.splice.asInstanceOf[U with V[B]]
+      value.splice.asInstanceOf[O]
     }
   }
 
