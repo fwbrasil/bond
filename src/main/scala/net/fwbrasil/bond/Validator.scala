@@ -26,5 +26,6 @@ class Validator1[T, V[_]](f: (T, T) => Boolean) extends Validator[T] {
   def apply[U <: T](w: Witness.Aux[U]) =
     new Validator0[T, V[w.T]]((v: T) => f(w.value, v))
 
-  implicit def lift[U <: T, A, B](v: V[A]): U with V[B] = ???
+  implicit def lift[A, U <: V[A], B](value: U): U with V[B] = 
+    macro Macros.lift[V, A, U, B]
 }

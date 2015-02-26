@@ -17,11 +17,6 @@ trait Strings {
   trait StartsWith[S]
   object StartsWith extends Validator1[String, StartsWith](_.startsWith(_))
 
-  val v = StartsWith(Witness("a")).validate("b").get
-  val j: String with StartsWith[Witness.`"b"`.T] = v
-  val a: String with StartsWith[Witness.`"b"`.T] =
-    StartsWith.lift[v.type, Witness.`"a"`.T, Witness.`"b"`.T](v)
-
   trait EndsWith
   trait MatchesRegex
 
@@ -32,4 +27,3 @@ trait Strings {
   //  test(StartsWith(a))
 
 }
-
