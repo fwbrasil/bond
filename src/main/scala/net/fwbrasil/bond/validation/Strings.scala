@@ -14,7 +14,7 @@ trait Strings {
   trait Email
   object Email extends Validator0[String, Email](_.matches(emailPattern))
 
-  trait StartsWith[S]
+  trait StartsWith[-S]
   object StartsWith extends Validator1[String, StartsWith](_.startsWith(_))
 
   trait EndsWith

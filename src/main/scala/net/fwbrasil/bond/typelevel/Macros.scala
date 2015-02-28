@@ -1,5 +1,6 @@
 package net.fwbrasil.bond.typelevel
 
+
 import scala.reflect.macros.whitebox.Context
 import language.experimental.macros
 import scala.language.experimental.macros
@@ -8,9 +9,10 @@ import java.lang.reflect.Field
 import shapeless.SingletonTypeUtils
 
 object Macros {
-  def lift[V[_], O](c: Context)(value: c.Expr[Any])(
-    implicit v: c.WeakTypeTag[V[_]],
-    o: c.WeakTypeTag[O]): c.Expr[O] = {
+  
+  def lift[T, U, V](c: Context)(value: c.Expr[U], f: c.Expr[T => Boolean])(
+    implicit v: c.WeakTypeTag[V],
+    u: c.WeakTypeTag[U]): c.Expr[U with V] = {
     import c.universe._
     //    val a = value.actualType.baseType(value.actualType.baseClasses(1))
     //    val w = weakTypeOf[T]
@@ -19,8 +21,16 @@ object Macros {
     //    c.warning(c.enclosingPosition, showRaw(a))
     //    c.warning(c.enclosingPosition, showRaw(u))
     //    c.warning(c.enclosingPosition, showRaw(b))
+    //    println(value.actualType.baseClasses)
     println(showRaw(value.actualType))
-    println(showRaw(weakTypeOf[O]))
+    println(showRaw(weakTypeOf[V]))
+    println(showRaw(weakTypeOf[U]))
+    println(showRaw(f))
+
+    val baseClasses = weakTypeOf[U].baseClasses.filter(weakTypeOf[V].contains)
+    val baseTypes = baseClasses.map(weakTypeOf[U].baseType(_))
+    
+    
 
     //    val q"${tpeString: String}" = tpeSelector
     //    val tpe =
@@ -30,7 +40,7 @@ object Macros {
     //    typeCarrier(tpe)
 
     reify {
-      null.asInstanceOf[O]
+      null.asInstanceOf[U with V]
     }
   }
 }

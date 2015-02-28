@@ -7,10 +7,13 @@ import syntax.singleton._
 import net.fwbrasil.bond._
 
 class Test extends Strings {
+  
+  val a: String with StartsWith[Witness.`"a"`.T] = ???
+  val z: String with StartsWith[Witness.`"b"`.T] = a
 
   val v = StartsWith(Witness("a")).validate("b").get
-  val j: String with StartsWith[Witness.`"b"`.T] =
-    StartsWith.lift[String with StartsWith[Witness.`"b"`.T]](v)
-  //    StartsWith.lift[String with StartsWith[Witness.`"a"`.T], Witness.`"b"`.T](v)
+  val j =
+      StartsWith(Witness("b")).lift(v)
 
 }
+ 
