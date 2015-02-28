@@ -18,7 +18,8 @@ object BondBuild extends Build {
             id = "bond-macros",
             base = file("bond-macros"),
             settings = commonSettings ++ Seq(
-                libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
+                libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+                libraryDependencies += "net.fwbrasil" % "smirror_2.11" % "0.9"
             ))
 
     lazy val core =
