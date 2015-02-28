@@ -6,12 +6,10 @@ import shapeless.Witness.apply
 
 object Test extends App {
 
-    val v = StartsWith("bb").validate("bb").get
-    val j = StartsWith("b").lift(v)
+  val v = StartsWith("bb")("bb").get
+//  val j = StartsWith("b").lift(v)
 
-  val k = validate(Email)("a@a.com").get
-
-  val r = validate(StartsWith("b"))("a@a.com")
+  val k = Email("a@a.com").get
 
 }
  

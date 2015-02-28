@@ -14,6 +14,9 @@ object Macros {
     m: c.WeakTypeTag[M]): c.Expr[U with M] = {
     import c.universe._
     
+    println(showRaw(weakTypeTag[U]))
+    println(showRaw(weakTypeTag[M]))
+    
     val List(ConstantType(Constant(origin: Object))) = weakTypeTag[U].tpe.baseType(weakTypeTag[M].tpe.baseClasses.head).typeArgs
     val List(ConstantType(Constant(target: Object))) = weakTypeTag[M].tpe.typeArgs
     

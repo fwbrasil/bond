@@ -7,13 +7,7 @@ import scala.language.experimental.macros
 package object bond {
 
   implicit def narrowSymbol[S <: String](t: Symbol): Symbol @@ S = macro SingletonTypeMacros.narrowSymbol[S]
-
-  def validate[T, M](validator: Validator[T, M])(value: T) =
-    validator.validate(value)
-
-//  def lift[T, M](validator: Validator[T, M])(value: T) =
-//    validator.lift(value)
-
+  
   implicit def toValidator0[T, M](validation: Validation0[T, M]) =
     new Validator[T, M](validation.isValid)
 
