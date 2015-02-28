@@ -4,7 +4,7 @@ sealed trait Result[+T] {
 
   def get: T
 
-  def map[U](f: T => U) = flatMap[U](f.andThen(Valid(_)))
+//  def map[U](f: T => U) = flatMap[U](f.andThen(Valid(_)))
   def flatMap[U](f: T => Result[U]): Result[U]
 }
 
@@ -42,5 +42,5 @@ object Invalid {
     Some(invalid.violations)
 }
 
-case class Violation[T](value: T, validator: Validator[T, _])
+case class Violation[T](value: T)
 case class ViolationsException(violations: List[Violation[_]]) extends Exception
