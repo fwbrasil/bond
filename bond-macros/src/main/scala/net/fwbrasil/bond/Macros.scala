@@ -56,7 +56,10 @@ object Macros {
   private def findLiftMethod(c: Context)(tpe: c.Type) =
     Try {
       val cls = classLoader.loadClass(tpe.baseClasses.head.fullName)
-      sClassOf(cls).companionObjectOption.flatMap(_.methods.find(_.name == "lift")).get
+      sClassOf(cls).companionObjectOption.flatMap(_.methods.find(_.name == "lift"))
+        .getOrElse {
+          throw new IllegalStateException(s"Can't find the 'lift' method for$tpe")
+        }
     }
 
   private def validateLift(method: SInstanceMethod[_], origin: Object, target: Object) =
