@@ -25,17 +25,9 @@ object BondBuild extends Build {
         Project(
             id = "bond-core",
             base = file("bond-core"),
-            dependencies = Seq(macros),
-            settings = commonSettings ++ Seq(
-                libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0"
-            ))
-
-    lazy val all =
-        Project(
-            id = "bond-all",
-            base = file("bond-all"),
             dependencies = Seq(core),
             settings = commonSettings ++ Seq(
+                libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0",
                 ReleaseKeys.publishArtifactsAction := PgpKeys.publishSigned.value,
                 publishMavenStyle := true,
                 publishTo := {
