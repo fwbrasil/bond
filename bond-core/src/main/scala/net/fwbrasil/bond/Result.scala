@@ -35,6 +35,8 @@ class Invalid[T](private val value: T, val violations: List[Violation[_]]) exten
 
   override def hashCode =
     value.hashCode + 31 * violations.hashCode
+
+  override def toString = s"Invalid($violations)"
 }
 
 object Invalid {
@@ -42,5 +44,5 @@ object Invalid {
     Some(invalid.violations)
 }
 
-case class Violation[T](value: T)
+case class Violation[T](value: T, validator: Validator[_, _])
 case class ViolationsException(violations: List[Violation[_]]) extends Exception

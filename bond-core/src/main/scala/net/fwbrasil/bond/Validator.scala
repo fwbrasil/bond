@@ -17,7 +17,7 @@ trait Validator[T, M] {
     if (isValid(value))
       Valid(value)
     else
-      new Invalid(value, List())
+      new Invalid(value, List(Violation(value, this)))
 }
 
 trait LiftableValidator[T, P, M[_]] {
@@ -25,6 +25,7 @@ trait LiftableValidator[T, P, M[_]] {
   def apply[U <: P](w: Witness.Lt[U]) =
     new Validator[T, M[w.T]] {
       def isValid(v: T): Boolean = LiftableValidator.this.isValid(v, w.value)
+      override def toString = LiftableValidator.this.toString + s"(${w.value})"
     }
 
   def lift(a: P, b: P): Boolean
