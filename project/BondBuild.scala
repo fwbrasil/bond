@@ -10,7 +10,7 @@ object BondBuild extends Build {
         Project(
             id = "root",
             base = file("."),
-            aggregate = Seq(macros, core),
+            aggregate = Seq(macros, core, test),
             settings = commonSettings)
 
     lazy val macros =
@@ -57,6 +57,15 @@ object BondBuild extends Build {
                       <url>http://github.com/fwbrasil/</url>
                     </developer>
                   </developers>)
+            ))
+
+    lazy val test =
+        Project(
+            id = "bond-test",
+            base = file("bond-test"),
+            dependencies = Seq(core),
+            settings = commonSettings ++ Seq(
+                libraryDependencies += "org.specs2" %% "specs2" % "2.4.2" % "test"
             ))
 
     def commonSettings =
