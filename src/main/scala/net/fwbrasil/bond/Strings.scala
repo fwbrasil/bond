@@ -8,12 +8,13 @@ import net.fwbrasil.bond._
 
 // trait EndsWith
 //  trait MatchesRegex
-//  trait Email
-//  val Email =
-//    new Validation0[String, Email] {
-//      def apply(v: String) =
-//        v.matches(emailPattern)
-//    }
+
+trait Email
+object Email extends Validation0[String, Email] {
+  private val emailPattern = """(\w+)@([\w\.]+)"""
+  def isValid(v: String) =
+    v.matches(emailPattern)
+}
 
 trait StartsWith[-T]
 object StartsWith extends Validation1[String, StartsWith] {

@@ -1,16 +1,17 @@
 package net.fwbrasil.bond.validation
 
-import shapeless._
-import syntax.singleton._
-import shapeless._
-import syntax.singleton._
 import net.fwbrasil.bond._
 import net.fwbrasil.bond.StartsWith
+import shapeless.Witness.apply
 
-class Test {
-  
-  val v = StartsWith("bb")("bb").get
-  val j = StartsWith("c").lift(v)
+object Test extends App {
+
+    val v = StartsWith("bb").validate("bb").get
+    val j = StartsWith("b").lift(v)
+
+  val k = validate(Email)("a@a.com").get
+
+  val r = validate(StartsWith("b"))("a@a.com")
 
 }
  
