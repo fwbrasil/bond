@@ -8,7 +8,7 @@ object Email extends Validator[String, Email] {
 }
 
 trait StartsWith[-T]
-object StartsWith extends ParameterizedValidator[String, StartsWith] {
+object StartsWith extends ParameterizedValidator[String, StartsWith]  {
   def isValid(v: String, p: String) =
     v.startsWith(p)
 }

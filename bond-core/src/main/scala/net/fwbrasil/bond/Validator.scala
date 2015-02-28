@@ -20,12 +20,18 @@ trait Validator[T, M] {
       new Invalid(value, List())
 }
 
-trait ParameterizedValidator[T, M[_]] {
+trait LiftableValidator[T, P, M[_]] {
 
-  def apply[U <: T](w: Witness.Lt[U]) =
+  def apply[U <: P](w: Witness.Lt[U]) =
     new Validator[T, M[w.T]] {
-      def isValid(v: T): Boolean = ParameterizedValidator.this.isValid(v, w.value)
+      def isValid(v: T): Boolean = LiftableValidator.this.isValid(v, w.value)
     }
 
-  def isValid(v: T, p: T): Boolean
+  def lift(a: P, b: P): Boolean
+  def isValid(v: T, p: P): Boolean
+}
+
+trait ParameterizedValidator[T, M[_]]
+  extends LiftableValidator[T, T, M] {
+  def lift(a: T, b: T) = isValid(a, b)
 }

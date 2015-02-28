@@ -22,10 +22,10 @@ object Macros {
     val name = weakTypeTag[M].tpe.baseClasses.head.companion.fullName
     val cls = Class.forName(name + "$")
     val module = cls.getField("MODULE$").get(null)
-    val method = cls.getMethod("isValid", origin.getClass, target.getClass)
+    val method = cls.getMethods.find(_.getName == "lift").get
     val valid = method.invoke(module, origin, target).asInstanceOf[Boolean]
     if (!valid)
-      c.error(c.enclosingPosition, s"fail to lift $origin to $target")
+      c.error(c.enclosingPosition, s"failed to lift $origin to $target")
     q"""
       $value.asInstanceOf[$u with $m]
     """
