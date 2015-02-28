@@ -42,5 +42,5 @@ object Invalid {
     Some(invalid.violations)
 }
 
-case class Violation[T](value: T, validator: Validator[T])
+case class Violation[T](value: T, validator: Validator[T, _])
 case class ViolationsException(violations: List[Violation[_]]) extends Exception
