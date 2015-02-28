@@ -10,24 +10,24 @@ object BondBuild extends Build {
         Project(
             id = "root",
             base = file("."),
-            aggregate = Seq(macros, core, test),
+            aggregate = Seq(core, validation),
             settings = commonSettings)
-
-    lazy val macros =
-        Project(
-            id = "bond-macros",
-            base = file("bond-macros"),
-            settings = commonSettings ++ Seq(
-                libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
-            ))
 
     lazy val core =
         Project(
             id = "bond-core",
             base = file("bond-core"),
-            dependencies = Seq(core),
             settings = commonSettings ++ Seq(
                 libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0",
+                libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
+            ))
+
+    lazy val validation =
+        Project(
+            id = "bond-validation",
+            base = file("bond-validation"),
+            dependencies = Seq(core),
+            settings = commonSettings ++ Seq(
                 ReleaseKeys.publishArtifactsAction := PgpKeys.publishSigned.value,
                 publishMavenStyle := true,
                 publishTo := {
@@ -57,15 +57,6 @@ object BondBuild extends Build {
                       <url>http://github.com/fwbrasil/</url>
                     </developer>
                   </developers>)
-            ))
-
-    lazy val test =
-        Project(
-            id = "bond-test",
-            base = file("bond-test"),
-            dependencies = Seq(all),
-            settings = commonSettings ++ Seq(
-                libraryDependencies += "org.specs2" %% "specs2" % "2.4.2" % "test"
             ))
 
     def commonSettings =
