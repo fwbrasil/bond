@@ -8,4 +8,4 @@ jdk:
 script: travis_retry ./build.sh
 env:
   global:
-    secure: UkXqBkZKvIsGHsIwMS9DXwLYgS6/jSi+YjYjBKOO3b/xrf1jjOsVnd6nsMkw9x4RJoDzbLLbZSflhW+2ZvB6Xj5Cq0ehjk/wrEnZNGxLMinh3HOSsDyOI2Gt2FvcJvhuxc+cmTEBd36CgeZnQgLKp3EeSxpF80C/F6f1Xzx4MqA=
+    secure: hpPBGkOeeVcej9tdlZkem2WSZLxZRin0ttAVh8vTBjQc8gZOrogfKRMd9MS9kUQJr3HVFiOaQLLEQyJaZXkDEmHyJAVjnUymW5VjSRYS3SpjTEV9XQqU6sfPBjUTjetnc4CwTXjlkm64AU7gaJlc/fM/eURg3nOxc0P8YXrW37s=
