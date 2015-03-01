@@ -4,7 +4,6 @@ import scala.reflect.macros.whitebox.Context
 import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
-
 import net.fwbrasil.smirror.SInstanceMethod
 import net.fwbrasil.smirror.runtimeMirror
 import net.fwbrasil.smirror.sClassOf
@@ -13,19 +12,24 @@ object Macros {
 
   private val classLoader = getClass.getClassLoader
   private implicit lazy val mirror = runtimeMirror(classLoader)
+  //  lazy val tb = mirror.mkToolBox(frontEnd, options)
 
-  def lift[T, U, M](c: Context)(value: c.Expr[U])(implicit t: c.WeakTypeTag[T], u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]): c.Tree = {
+  def lift[T, U, M](c: Context)(value: c.Expr[U])(
+    implicit t: c.WeakTypeTag[T], u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) = {
+
     import c.universe._
-    
+
     c.inferImplicitView(value.tree, value.tree.tpe, t.tpe)
-    
+
     isValid[U, M](c) match {
       case Success(true) =>
       // ok
       case Success(false) =>
-        c.error(c.enclosingPosition, s"The lifting of '${u.tpe}'' to '${m.tpe}' is not valid (Bond)")
+        c.error(c.enclosingPosition, 
+            s"The lifting of '${u.tpe}'' to '${m.tpe}' is not valid (Bond)")
       case Failure(ex) =>
-        c.error(c.enclosingPosition, s"'${u.tpe}' is not liftable to '${m.tpe}' - ${ex.getMessage} (Bond)")
+        c.error(c.enclosingPosition, 
+            s"'${u.tpe}' is not liftable to '${m.tpe}' - ${ex.getMessage} (Bond)")
     }
 
     q"""
@@ -33,24 +37,46 @@ object Macros {
     """
   }
 
-  private def isValid[U, M](c: Context)(implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) = {
+  private def isValid[U, M](c: Context)(implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) =
+    for {
+      origin <- extractConstantTypeArg(c)(u.tpe.baseType(m.tpe.baseClasses.head))
+      target <- extractConstantTypeArg(c)(m.tpe)
+      valid <- tryFastJavaReflection[U, M](c)(origin, target)
+        .orElse(useSlowScalaCodeGeneration[U, M](c)(origin, target))
+    } yield {
+      valid
+    }
+
+  private def tryFastJavaReflection[U, M](c: Context)(
+    origin: c.universe.Constant, target: c.universe.Constant)(
+      implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) = {
     import c.universe._
     for {
-      origin <- extractConstantTypeArg(c)(weakTypeTag[U].tpe.baseType(weakTypeTag[M].tpe.baseClasses.head))
-      target <- extractConstantTypeArg(c)(weakTypeTag[M].tpe)
       lift <- findLiftMethod(c)(weakTypeTag[M].tpe)
-      valid <- validateLift(lift, origin, target)
+      valid <- validateLift(lift, origin.value, target.value)
     } yield {
       valid
     }
   }
 
+  private def useSlowScalaCodeGeneration[U, M](c: Context)(
+    origin: c.universe.Constant, target: c.universe.Constant)(
+      implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) =
+    Try {
+      import c.universe._
+      c.warning(c.enclosingPosition, "using slow scala reflection")
+      c.eval[Boolean](c.Expr(q"${m.tpe.typeSymbol.companionSymbol}.lift($origin, $target)"))
+    }
+
   private def extractConstantTypeArg(c: Context)(tpe: c.Type) =
     Try {
       import c.universe._
       tpe.typeArgs match {
-        case List(ConstantType(Constant(constant: Object))) => constant
-        case _ => throw new IllegalStateException(s"Expected a single constant type arg, but got ${tpe.typeArgs} for $tpe")
+        case List(ConstantType(c @ Constant(value))) =>
+          c
+        case _ =>
+          throw new IllegalStateException(
+            s"Expected a single constant type arg, but got ${tpe.typeArgs} for $tpe")
       }
     }
 
@@ -61,7 +87,7 @@ object Macros {
       method
     }
 
-  private def validateLift(method: SInstanceMethod[_], origin: Object, target: Object) =
+  private def validateLift(method: SInstanceMethod[_], origin: Any, target: Any) =
     Try {
       method.invoke(origin, target).asInstanceOf[Boolean]
     }
