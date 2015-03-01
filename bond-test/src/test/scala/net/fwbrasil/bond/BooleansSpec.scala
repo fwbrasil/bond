@@ -7,10 +7,11 @@ class BooleansSpec extends Spec {
     def valids = List(false)
     def invalids = List(true)
 
-    override def typeLevelTests =
+    override def typeLevelTests = {
       "doesn't cast from true" in {
-        "True(true).get: Boolean with False"  mustNot typeCheck
+        "True(true).get: Boolean with False" mustNot typeCheck
       }
+    }
   }
 
   new ValidatorTest(True) {
@@ -20,7 +21,7 @@ class BooleansSpec extends Spec {
 
     override def typeLevelTests =
       "doesn't cast from false" in {
-        "False(false).get: Boolean with True"  mustNot typeCheck
+        "False(false).get: Boolean with True" mustNot typeCheck
       }
   }
 }

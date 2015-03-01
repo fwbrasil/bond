@@ -50,6 +50,4 @@ object Invalid {
 
 case class Violation[T](value: T, validator: Validator[_, _])
 case class ViolationsException(violations: List[Violation[_]])
-  extends Exception {
-  override def getMessage = s"$violations"
-}
+  extends Exception(violations.toString)

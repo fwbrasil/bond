@@ -4,12 +4,13 @@ class NumbersSpec extends Spec {
 
   new ValidatorTest(GreaterThan(5)) {
 
-    def valids = List(10d, 20, 30l)
+    def valids = List(10, 20, 30l)
     def invalids = List(5d, 1, 3l)
 
     override def typeLevelTests = {
       "lifts to GreaterThan(1)" in {
-        GreaterThan(1).lift(validValue)
+        val value: Int with GreaterThan[T.`1`.T] with GreaterThan[T.`5`.T] =
+          GreaterThan(1).lift(GreaterThan(5).validate(6).get)
       }
       "doesn't lift to GreaterThan(20)" in {
         "GreaterThan(5).lift(validResult)" mustNot typeCheck
@@ -72,17 +73,17 @@ class NumbersSpec extends Spec {
     def valids = List(1, 9, 11, 235)
     def invalids = List(2, 3332, 22)
   }
-  
+
   new ValidatorTest(Even) {
-	  def valids = List(2, 3332, 22)
+    def valids = List(2, 3332, 22)
     def invalids = List(1, 9, 11, 235)
   }
-  
+
   new ValidatorTest(Prime) {
     def valids = List(2, 3, 7723)
     def invalids = List(1, 7722)
   }
-  
+
   new ValidatorTest(Perfect) {
     def valids = List(6, 496, 33550336)
     def invalids = List(1, 7722)

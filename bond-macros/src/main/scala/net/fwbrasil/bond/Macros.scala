@@ -14,9 +14,11 @@ object Macros {
   private val classLoader = getClass.getClassLoader
   private implicit lazy val mirror = runtimeMirror(classLoader)
 
-  def lift[U, M](c: Context)(value: c.Expr[U])(implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]): c.Tree = {
+  def lift[T, U, M](c: Context)(value: c.Expr[U])(implicit t: c.WeakTypeTag[T], u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]): c.Tree = {
     import c.universe._
-
+    
+    c.inferImplicitView(value.tree, value.tree.tpe, t.tpe)
+    
     isValid[U, M](c) match {
       case Success(true) =>
       // ok
@@ -27,7 +29,7 @@ object Macros {
     }
 
     q"""
-      $value.asInstanceOf[$u with $m]
+      $value.asInstanceOf[${value.actualType} with $m]
     """
   }
 
@@ -55,10 +57,8 @@ object Macros {
   private def findLiftMethod(c: Context)(tpe: c.Type) =
     Try {
       val cls = classLoader.loadClass(tpe.baseClasses.head.fullName)
-      sClassOf(cls).companionObjectOption.flatMap(_.methods.find(_.name == "lift"))
-        .getOrElse {
-          throw new IllegalStateException(s"Can't find the 'lift' method for$tpe")
-        }
+      val Some(method) = sClassOf(cls).companionObjectOption.flatMap(_.methods.find(_.name == "lift"))
+      method
     }
 
   private def validateLift(method: SInstanceMethod[_], origin: Object, target: Object) =

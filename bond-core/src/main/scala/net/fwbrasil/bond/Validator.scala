@@ -5,7 +5,7 @@ import language.experimental.macros
 
 trait Validator[T, M] {
 
-  def lift[U <: T](value: U): Any = macro Macros.lift[U, M]
+  def lift[U](value: U): Any = macro Macros.lift[T, U, M]
 
   def validate[U <% T](value: U) =
     resultFor(value).asInstanceOf[Result[U with M]]

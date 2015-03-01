@@ -69,5 +69,21 @@ class ResultSpec extends Spec {
       }
     }
   }
+  
+  "invalid result implements `hashCode` correctly" in {
+    Even.validate(1).hashCode == Even.validate(1).hashCode
+    Even.validate(1).hashCode != Even.validate(2).hashCode
+    Even.validate(1).hashCode != Prime.validate(1).hashCode
+  }
+  
+  "invalid result implements `equals` correctly" in {
+    Even.validate(1) == Even.validate(1)
+    Even.validate(1) != Even.validate(2)
+    Even.validate(1) != Prime.validate(1)
+  }
+  
+  "invalid result implements `toString`" in {
+    Even.validate(1).toString mustEqual "Invalid(List(Violation(1,Even)))"
+  }
 
 }

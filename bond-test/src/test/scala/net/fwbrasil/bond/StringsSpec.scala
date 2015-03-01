@@ -22,6 +22,9 @@ class StringsSpec extends Spec {
       "doesn't lift to StartsWith('b')" in {
         """StartsWith("b").lift(validResult)""" mustNot typeCheck
       }
+      "doesn't lift to null" in {
+        "StartsWith(null).lift(validValue)" mustNot typeCheck
+      }
     }
   }
   
