@@ -1,9 +1,7 @@
 package net.fwbrasil.bond
 
-import shapeless.Witness
 import org.scalatest.FreeSpec
 import org.scalatest.MustMatchers
-import org.scalatest.Inside
 
 class Spec extends FreeSpec with MustMatchers {
 

@@ -53,12 +53,11 @@ case object Prime
   extends Validator[Int, Prime] {
 
   def isValid(v: Int) =
-    if (v <= 1)
-      false
-    else if (v == 2)
-      true
-    else
-      !(2 to (v - 1)).exists(x => v % x == 0)
+    v match {
+      case v if (v <= 1) => false
+      case v if (v == 2) => true
+      case v             => !(2 to (v - 1)).exists(x => v % x == 0)
+    }
 }
 
 trait Perfect

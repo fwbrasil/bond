@@ -1,7 +1,6 @@
 package net.fwbrasil.bond
 
-import shapeless._
-
+import shapeless.Witness
 import language.experimental.macros
 
 trait Validator[T, M] {
