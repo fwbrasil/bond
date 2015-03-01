@@ -25,11 +25,11 @@ object Macros {
       case Success(true) =>
       // ok
       case Success(false) =>
-        c.error(c.enclosingPosition, 
-            s"The lifting of '${u.tpe}'' to '${m.tpe}' is not valid (Bond)")
+        c.error(c.enclosingPosition,
+          s"The lifting of '${u.tpe}'' to '${m.tpe}' is not valid (Bond)")
       case Failure(ex) =>
-        c.error(c.enclosingPosition, 
-            s"'${u.tpe}' is not liftable to '${m.tpe}' - ${ex.getMessage} (Bond)")
+        c.error(c.enclosingPosition,
+          s"'${u.tpe}' is not liftable to '${m.tpe}' - ${ex.getMessage} (Bond)")
     }
 
     q"""
@@ -42,7 +42,6 @@ object Macros {
       origin <- extractConstantTypeArg(c)(u.tpe.baseType(m.tpe.baseClasses.head))
       target <- extractConstantTypeArg(c)(m.tpe)
       valid <- tryFastJavaReflection[U, M](c)(origin, target)
-        .orElse(useSlowScalaCodeGeneration[U, M](c)(origin, target))
     } yield {
       valid
     }
@@ -58,14 +57,6 @@ object Macros {
       valid
     }
   }
-
-  private def useSlowScalaCodeGeneration[U, M](c: Context)(
-    origin: c.universe.Constant, target: c.universe.Constant)(
-      implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) =
-    Try {
-      import c.universe._
-      c.eval[Boolean](c.Expr(q"${m.tpe.typeSymbol.companionSymbol}.lift($origin, $target)"))
-    }
 
   private def extractConstantTypeArg(c: Context)(tpe: c.Type) =
     Try {
