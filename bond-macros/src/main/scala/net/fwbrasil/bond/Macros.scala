@@ -12,7 +12,6 @@ object Macros {
 
   private val classLoader = getClass.getClassLoader
   private implicit lazy val mirror = runtimeMirror(classLoader)
-  //  lazy val tb = mirror.mkToolBox(frontEnd, options)
 
   def lift[T, U, M](c: Context)(value: c.Expr[U])(
     implicit t: c.WeakTypeTag[T], u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) = {
