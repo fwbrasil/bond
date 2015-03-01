@@ -15,14 +15,18 @@ case class Valid[T](value: T) extends Result[T] {
   def flatMap[U](f: T => Result[U]) = f(value)
 }
 
-class Invalid[T](private val value: T, val violations: List[Violation[_]]) extends Result[T] {
+class Invalid[T](private val value: T,
+                 val violations: List[Violation[_]])
+  extends Result[T] {
 
   def get = throw ViolationsException(violations)
 
   def flatMap[U](f: T => Result[U]) =
     f(value) match {
-      case valid: Valid[U]     => new Invalid(valid.value, violations)
-      case invalid: Invalid[U] => new Invalid(invalid.value, invalid.violations ++ violations)
+      case valid: Valid[U] =>
+        new Invalid(valid.value, violations)
+      case invalid: Invalid[U] =>
+        new Invalid(invalid.value, violations ++ invalid.violations)
     }
 
   override def equals(that: Any) =
@@ -45,6 +49,7 @@ object Invalid {
 }
 
 case class Violation[T](value: T, validator: Validator[_, _])
-case class ViolationsException(violations: List[Violation[_]]) extends Exception {
+case class ViolationsException(violations: List[Violation[_]])
+  extends Exception {
   override def getMessage = s"$violations"
 }

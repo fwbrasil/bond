@@ -7,7 +7,7 @@ trait Validator[T, M] {
 
   def lift[U <: T](value: U): Any = macro Macros.lift[U, M]
 
-  def apply[U <% T](value: U) =
+  def validate[U <% T](value: U) =
     resultFor(value).asInstanceOf[Result[U with M]]
 
   def isValid(v: T): Boolean
