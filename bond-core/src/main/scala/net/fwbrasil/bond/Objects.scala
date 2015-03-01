@@ -1,8 +1,8 @@
 package net.fwbrasil.bond
 
-trait IsEqualsTo[-T]
-case object IsEqualsTo
-  extends ParameterizedValidator[Any, IsEqualsTo] {
+trait EqualsTo[-T]
+case object EqualsTo
+  extends ParameterizedValidator[Any, EqualsTo] {
 
   def isValid(v: Any, p: Any) =
     v == p

@@ -1,41 +1,47 @@
 package net.fwbrasil.bond
 
 import shapeless.Witness
-import org.specs2.mutable.Specification
-import org.specs2.specification.Scope
-import org.specs2.specification.Example
-import org.specs2.execute.AsResult
+import org.scalatest.FreeSpec
+import org.scalatest.MustMatchers
+import org.scalatest.Inside
 
-class Spec extends Specification {
+class Spec extends FreeSpec with MustMatchers {
 
   val fails = shapeless.test.illTyped
-  
+
   abstract class ValidatorTest[T, V](validator: Validator[T, V]) {
 
-    val valid: T
-    val invalid: T
-    
-    def validResult = validator(valid).get
-    
-    def typeLevelTests: Example
+    def valids: List[T]
+    def invalids: List[T]
 
-    validator.toString >> {
+    def validResult = validator(valids.head).get
 
-        "success" in {
-          validator(valid) mustEqual Valid(valid)
-          validator(valid).get: T with V
-          ok
-        }
+    def typeLevelTests: Unit
 
-        "failure" in {
-          validator(invalid) must beLike {
-            case Invalid(List(Violation(invalid, validator))) => ok
+    validator.toString - {
+
+      "valid" - {
+        for (valid <- valids) yield {
+          valid.toString in {
+            validator(valid).get: T with V
+            validator(valid) mustEqual Valid(valid)
           }
         }
-        
-        "type-level" >> {
-          typeLevelTests
+      }
+
+      "invalid" - {
+        for (invalid <- invalids) yield {
+          invalid.toString in {
+            validator(invalid) match {
+              case Invalid(List(Violation(invalid, validator))) =>
+            }
+          }
         }
+      }
+
+      "type-level" - {
+        typeLevelTests
+      }
     }
   }
 }

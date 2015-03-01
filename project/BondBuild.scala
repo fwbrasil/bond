@@ -66,7 +66,7 @@ object BondBuild extends Build {
             base = file("bond-test"),
             dependencies = Seq(core),
             settings = commonSettings ++ Seq(
-                libraryDependencies += "org.specs2" %% "specs2" % "2.4.2" % "test"
+                libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
             ))
 
     def commonSettings =

@@ -23,8 +23,7 @@ object Macros {
       case Success(false) =>
         c.error(c.enclosingPosition, s"The lifting of '${u.tpe}'' to '${m.tpe}' is not valid (Bond)")
       case Failure(ex) =>
-        c.error(c.enclosingPosition, s"'${u.tpe}' is not liftable to '${m.tpe}' (Bond)")
-        c.error(c.enclosingPosition, ex.getMessage)
+        c.error(c.enclosingPosition, s"'${u.tpe}' is not liftable to '${m.tpe}' - ${ex.getMessage} (Bond)")
     }
 
     q"""
@@ -64,6 +63,12 @@ object Macros {
 
   private def validateLift(method: SInstanceMethod[_], origin: Object, target: Object) =
     Try {
-      method.invoke(origin, target).asInstanceOf[Boolean]
+      method.invoke(numbersToDouble(origin), numbersToDouble(target)).asInstanceOf[Boolean]
+    }
+
+  private def numbersToDouble(value: Object) =
+    value match {
+      case n: Number => n.doubleValue
+      case other     => other
     }
 }

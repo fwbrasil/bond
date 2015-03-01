@@ -22,7 +22,7 @@ trait Validator[T, M] {
 
 trait LiftableValidator[T, P, M[_]] {
 
-  def apply[U <: P](w: Witness.Lt[U]) =
+  def apply[U <% P](w: Witness.Lt[U]) =
     new Validator[T, M[w.T]] {
       def isValid(v: T): Boolean = LiftableValidator.this.isValid(v, w.value)
       override def toString = LiftableValidator.this.toString + s"(${w.value})"
@@ -36,3 +36,13 @@ trait ParameterizedValidator[T, M[_]]
   extends LiftableValidator[T, T, M] {
   def lift(a: T, b: T) = isValid(a, b)
 }
+
+trait NumericValidator[M[_]]
+  extends ParameterizedValidator[Double, M] {
+
+  def isValid(v: Double, p: Double): Boolean =
+    isValid[Double](v, p)
+
+  def isValid[T](v: T, p: T)(implicit n: Numeric[T]): Boolean
+}
+
