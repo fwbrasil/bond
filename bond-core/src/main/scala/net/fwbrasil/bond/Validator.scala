@@ -38,10 +38,10 @@ trait ParameterizedValidator[T, M[_]]
 }
 
 trait NumericValidator[M[_]]
-  extends ParameterizedValidator[Double, M] {
+  extends ParameterizedValidator[Number, M] {
 
-  def isValid(v: Double, p: Double): Boolean =
-    isValid[Double](v, p)
+  def isValid(v: Number, p: Number): Boolean =
+    isValid[Double](v.doubleValue, p.doubleValue)
 
   def isValid[T](v: T, p: T)(implicit n: Numeric[T]): Boolean
 }

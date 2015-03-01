@@ -63,12 +63,6 @@ object Macros {
 
   private def validateLift(method: SInstanceMethod[_], origin: Object, target: Object) =
     Try {
-      method.invoke(numbersToDouble(origin), numbersToDouble(target)).asInstanceOf[Boolean]
-    }
-
-  private def numbersToDouble(value: Object) =
-    value match {
-      case n: Number => n.doubleValue
-      case other     => other
+      method.invoke(origin, target).asInstanceOf[Boolean]
     }
 }

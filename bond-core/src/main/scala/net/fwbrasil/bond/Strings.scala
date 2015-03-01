@@ -4,7 +4,8 @@ trait Email
 case object Email
   extends Validator[String, Email] {
 
-  private val emailPattern = """(\w+)@([\w\.]+)"""
+  private val emailPattern =
+    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
 
   def isValid(v: String) =
     v.matches(emailPattern)

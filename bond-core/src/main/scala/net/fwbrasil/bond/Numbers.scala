@@ -66,5 +66,7 @@ case object Perfect
   extends Validator[Int, Perfect] {
 
   def isValid(v: Int) =
-    (1 until v).foldLeft(0)((acc, i) => if (v % i == 0) acc + i else acc) == v
+    v == (1 until v).foldLeft(0) { (acc, i) =>
+      if (v % i == 0) acc + i else acc
+    }
 }

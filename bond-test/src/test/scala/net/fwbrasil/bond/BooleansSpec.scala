@@ -7,9 +7,9 @@ class BooleansSpec extends Spec {
     def valids = List(false)
     def invalids = List(true)
 
-    def typeLevelTests =
-      "doesn't cast to true" in {
-        fails("True(true).get: Boolean with False")
+    override def typeLevelTests =
+      "doesn't cast from true" in {
+        "True(true).get: Boolean with False"  mustNot typeCheck
       }
   }
 
@@ -18,9 +18,9 @@ class BooleansSpec extends Spec {
     def valids = List(true)
     def invalids = List(false)
 
-    def typeLevelTests =
-      "doesn't cast to false" in {
-        fails("False(false).get: Boolean with True")
+    override def typeLevelTests =
+      "doesn't cast from false" in {
+        "False(false).get: Boolean with True"  mustNot typeCheck
       }
   }
 }

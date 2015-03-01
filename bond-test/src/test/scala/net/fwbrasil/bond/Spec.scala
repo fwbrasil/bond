@@ -7,22 +7,21 @@ import org.scalatest.Inside
 
 class Spec extends FreeSpec with MustMatchers {
 
-  val fails = shapeless.test.illTyped
-
   abstract class ValidatorTest[T, V](validator: Validator[T, V]) {
 
     def valids: List[T]
     def invalids: List[T]
 
-    def validResult = validator(valids.head).get
+    def valid = valids.head
+    def validValue = validator(valids.head).get
 
-    def typeLevelTests: Unit
+    def typeLevelTests = {}
 
     validator.toString - {
 
       "valid" - {
         for (valid <- valids) yield {
-          valid.toString in {
+          s"$valid" in {
             validator(valid).get: T with V
             validator(valid) mustEqual Valid(valid)
           }
@@ -31,7 +30,7 @@ class Spec extends FreeSpec with MustMatchers {
 
       "invalid" - {
         for (invalid <- invalids) yield {
-          invalid.toString in {
+          s"$invalid" in {
             validator(invalid) match {
               case Invalid(List(Violation(invalid, validator))) =>
             }
