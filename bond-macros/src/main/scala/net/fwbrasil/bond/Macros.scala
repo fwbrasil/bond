@@ -64,7 +64,6 @@ object Macros {
       implicit u: c.WeakTypeTag[U], m: c.WeakTypeTag[M]) =
     Try {
       import c.universe._
-      c.warning(c.enclosingPosition, "using slow scala reflection")
       c.eval[Boolean](c.Expr(q"${m.tpe.typeSymbol.companionSymbol}.lift($origin, $target)"))
     }
 
