@@ -14,7 +14,6 @@ libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0"
 
 releaseSettings
 
-ReleaseKeys.crossBuild := true
 ReleaseKeys.publishArtifactsAction := PgpKeys.publishSigned.value
 
 publishMavenStyle := true
