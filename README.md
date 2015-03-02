@@ -59,7 +59,7 @@ object controller {
             case Invalid(violations)       => render.badRequest(violations)
         }
 
-    private def applyValueLevelValidations(name: String, email: String, age: Int) =
+    private def applyValueLevelValidations(name: String, email: String, age: Int): Result[(String with NonEmpty, String with Email, Int with GreaterThan[T.`14`.T])] =
         for {
             name <- NonEmpty.validate(name)
             email <- Email.validate(email)
