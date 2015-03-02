@@ -5,32 +5,6 @@ Type-level validation for Scala
 [![Codacy Badge](https://www.codacy.com/project/badge/eb4d686ffc7949b48516a806f0e2412c)](https://www.codacy.com/public/fwbrasil/bond)
 [![Join the chat at https://gitter.im/fwbrasil/bond](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/fwbrasil/bond?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Getting started #
-
-To use bond, just add the dependency to the project's build configuration.
-
-__Important__: Bond is available only for Scala `2.11.x`. Change ```x.x.x``` with the latest version listed in the [CHANGELOG.md](https://github.com/fwbrasil/bond/blob/master/CHANGELOG.md) file.
-
-SBT
-
-```scala
-libraryDependencies ++= Seq(
-  "net.fwbrasil" %% "bond" % "x.x.x"
-)
-```
-
-Maven
-
-```xml
-<dependency>
-    <groupId>net.fwbrasil</groupId>
-    <artifactId>bond</artifactId>
-    <version>x.x.x</version>
-</dependency>
-```
-
-# Usage #
-
 Bond provides a mechanism to express validation constraints by using the type system. A quick example:
 
 ```scala
@@ -115,6 +89,30 @@ BadRequest: List(Violation(1,GreaterThan(14)))
 
 scala> controller.createEmployeeRestEndpoint("a", "b@a.com", 17)
 OK: Employee(a,b@a.com,17)
+```
+
+# Getting started #
+
+To use bond, just add the dependency to the project's build configuration.
+
+__Important__: Bond is available only for Scala `2.11.x`. Change ```x.x.x``` with the latest version listed in the [CHANGELOG.md](https://github.com/fwbrasil/bond/blob/master/CHANGELOG.md) file.
+
+SBT
+
+```scala
+libraryDependencies ++= Seq(
+  "net.fwbrasil" %% "bond" % "x.x.x"
+)
+```
+
+Maven
+
+```xml
+<dependency>
+    <groupId>net.fwbrasil</groupId>
+    <artifactId>bond</artifactId>
+    <version>x.x.x</version>
+</dependency>
 ```
 
 # Built-in Validations #
