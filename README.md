@@ -47,7 +47,7 @@ case class Company (
 )
 ```
 
-*Note*: Scala does not have support for easily defining singleton types. The ```T.`2`.T``` definition is a shortcut for ```shapeless.Witness.`2`.T```, that produces the singleton type by using a macro. It is possible to define singleton types for `String` as well: ```T.`"a"`.T```.
+> *Note*: Scala does not have support for easily defining singleton types. The ```T.`2`.T``` definition is a shortcut for ```shapeless.Witness.`2`.T```, that produces the singleton type by using a macro. It is possible to define singleton types for `String` as well: ```T.`"a"`.T```.
 
 The type-level computations allow the application of constraint transformations at compile time. The 'lift' method is used to apply such transformations:
 
@@ -179,11 +179,11 @@ Example usage:
 def registerForDangerousJob(employee: Employee with Adult) = ...
 ```
 
-**Important**: Scala does not provide a mechanism to define the macro expansion order and the lift macro depends on the validation class. This means that you need to manually guarantee that the validation class is compiled before the `lift` macro expansion. There are some workarounds to influence the compilation order:
-
-* Use the fact that Scala compiles resources in alphabetical order (including the package name).
-* Use a separate source folder that compiles before the main source folder.
-* Define the custom validations inside a separate sub-module
+> **Important**: Scala does not provide a mechanism to define the macro expansion order and the lift macro depends on the validation class. This means that you need to manually guarantee that the validation class is compiled before the `lift` macro expansion. There are some workarounds to influence the compilation order:
+> 
+> * Use the fact that Scala compiles resources in alphabetical order (including the package name).
+> * Use a separate source folder that compiles before the main source folder.
+> * Define the custom validations inside a separate sub-module
 
 
 # Versioning #
