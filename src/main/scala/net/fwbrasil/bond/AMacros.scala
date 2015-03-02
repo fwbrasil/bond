@@ -41,7 +41,7 @@ object Macros {
       origin <- extractConstantTypeArg(c)(u.tpe.baseType(m.tpe.baseClasses.head))
       target <- extractConstantTypeArg(c)(m.tpe)
       valid <- tryFastJavaReflection[U, M](c)(origin, target)
-    } yield {
+    } yield { 
       valid
     }
 

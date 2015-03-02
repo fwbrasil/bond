@@ -25,3 +25,4 @@ class BooleansSpec extends Spec {
       }
   }
 }
+ 
