@@ -46,7 +46,7 @@ GreaterThan(18).lift(employee.age)
 
 As a previous step of type-level validations, it is necessary to apply value-level validations. In an ideal application, the value-level validations should happen on the boundaries where it is necessary to interface with non-validated values. For instance, the boundaries could be the user interface or a database interaction.
 
-Bond provides a validation monad that is capable of accumulating multiple errors:
+Bond provides a validation DSL that is capable of accumulating multiple errors:
 
 ```scala
 import net.fwbrasil.bond._
