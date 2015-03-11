@@ -179,7 +179,6 @@ def registerForDangerousJob(employee: Employee with Adult) = ...
 
 > **Important**: Scala does not provide a mechanism to define the macro expansion order and the lift macro depends on the validation class. This means that you need to manually guarantee that the validation class is compiled before the `lift` macro expansion. There are some workarounds to influence the compilation order:
 > 
-> * Use the fact that Scala compiles resources in alphabetical order (including the package name).
 > * Use a separate source folder that compiles before the main source folder.
 > * Define the custom validations inside a separate sub-module
 
