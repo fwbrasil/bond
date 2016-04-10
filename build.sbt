@@ -2,17 +2,15 @@ name := "bond"
 
 organization := "net.fwbrasil"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.8"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
 libraryDependencies += "net.fwbrasil" % "smirror_2.11" % "0.9"
 
 libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
-libraryDependencies += "com.chuusai" %% "shapeless" % "2.1.0"
-
-releaseSettings
+libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.0"
 
 publishMavenStyle := true
 
