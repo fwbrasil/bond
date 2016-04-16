@@ -1,5 +1,7 @@
 package net.fwbrasil.bond
 
+import scala.util.Try
+
 trait Email
 case object Email
   extends Validator[String, Email] {
@@ -9,6 +11,14 @@ case object Email
 
   def isValid(v: String) =
     v.matches(emailPattern)
+}
+
+trait URL
+case object URL
+  extends Validator[String, URL] {
+
+  def isValid(v: String) =
+    Try { new java.net.URL(v) }.toOption.isDefined
 }
 
 trait StartsWith[-T]

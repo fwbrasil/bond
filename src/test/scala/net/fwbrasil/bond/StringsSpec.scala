@@ -7,6 +7,11 @@ class StringsSpec extends Spec {
     def invalids = List("te st@gmail.com", "banana")
   }
 
+  new ValidatorTest(URL) {
+    def valids = List("http://xxx.com", "ftp://yyy.edu")
+    def invalids = List("orange", "htt://orange")
+  }
+
   new ValidatorTest(StartsWith("aa")) {
 
     def valids = List("aa", "aaa")
