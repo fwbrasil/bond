@@ -1,5 +1,7 @@
 package net.fwbrasil.bond
 
+import scala.util.Try
+
 trait Email
 case object Email
   extends Validator[String, Email] {
@@ -9,6 +11,31 @@ case object Email
 
   def isValid(v: String) =
     v.matches(emailPattern)
+}
+
+trait URL
+case object URL
+  extends Validator[String, URL] {
+
+  def isValid(v: String) =
+    Try { new java.net.URL(v) }.toOption.isDefined
+}
+
+trait CreditCard
+case object CreditCard
+  extends Validator[String, CreditCard] {
+
+  def isValid(v: String) = {
+    v.reverse.sliding(1).map(_.toInt).toList.zipWithIndex.map {
+      case (v, k) if k % 2 == 0 => (v, k)
+      case (v, k)               => (v * 2, k)
+    }.unzip._1.map( i => {
+      i match {
+        case i if i >= 10 => i.toString.sliding(1).map(_.toInt).sum
+        case i            => i
+      }
+    }).sum % 10 == 0
+  }
 }
 
 trait StartsWith[-T]
