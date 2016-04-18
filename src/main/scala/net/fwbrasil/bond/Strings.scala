@@ -29,6 +29,14 @@ case object URL
     Try { new java.net.URL(v) }.toOption.isDefined
 }
 
+trait UUID
+case object UUID
+  extends Validator[String, UUID] {
+
+  def isValid(v: String) =
+    Try { java.util.UUID.fromString(v) }.toOption.isDefined
+}
+
 trait CreditCard
 case object CreditCard
   extends Validator[String, CreditCard] {

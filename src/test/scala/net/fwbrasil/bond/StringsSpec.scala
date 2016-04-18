@@ -17,6 +17,11 @@ class StringsSpec extends Spec {
     def invalids = List(" omega", " ile:///~/calendar")
   }
 
+  new ValidatorTest(UUID) {
+    def valids = List("9ecce884-47fe-4ba4-a1bb-1a3d71ed6530")
+    def invalids = List("aa-bb-cc-dd")
+  }
+
   new ValidatorTest(CreditCard) {
     def valids = List("2621195162335", "49927398716", "1234567812345670", "4485284720134093")
     def invalids = List("49927398717", "1234567812345678")
