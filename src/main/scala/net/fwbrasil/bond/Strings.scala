@@ -13,6 +13,14 @@ case object Email
     v.matches(emailPattern)
 }
 
+trait URI
+case object URI
+  extends Validator[String, URI] {
+
+  def isValid(v: String) =
+    Try { new java.net.URI(v) }.toOption.isDefined
+}
+
 trait URL
 case object URL
   extends Validator[String, URL] {

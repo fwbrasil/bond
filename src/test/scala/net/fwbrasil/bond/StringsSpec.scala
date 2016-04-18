@@ -12,6 +12,11 @@ class StringsSpec extends Spec {
     def invalids = List("orange", "htt://orange")
   }
 
+  new ValidatorTest(URI) {
+    def valids = List("file:///~/calendar", "http://java.sun.com/j2se/1.3/", "urn:isbn:096139210x")
+    def invalids = List(" omega", " ile:///~/calendar")
+  }
+
   new ValidatorTest(CreditCard) {
     def valids = List("2621195162335", "49927398716", "1234567812345670", "4485284720134093")
     def invalids = List("49927398717", "1234567812345678")
