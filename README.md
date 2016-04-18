@@ -142,10 +142,14 @@ Validators to be used with any type that is convertible to `java.lang.Number`.
 
 *[Strings](https://github.com/fwbrasil/bond/blob/v0.0.1/src/main/scala/net/fwbrasil/bond/Strings.scala)*
 
+* CreditCard
 * Email
 * StartsWith(S)
 * EndsWith(S)
 * MatchesRegex(S)
+* URI
+* URL
+* UUID
 
 *[Booleans](https://github.com/fwbrasil/bond/blob/v0.0.1/src/main/scala/net/fwbrasil/bond/Booleans.scala)*
 

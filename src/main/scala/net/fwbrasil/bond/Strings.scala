@@ -13,12 +13,28 @@ case object Email
     v.matches(emailPattern)
 }
 
+trait URI
+case object URI
+  extends Validator[String, URI] {
+
+  def isValid(v: String) =
+    Try { new java.net.URI(v) }.toOption.isDefined
+}
+
 trait URL
 case object URL
   extends Validator[String, URL] {
 
   def isValid(v: String) =
     Try { new java.net.URL(v) }.toOption.isDefined
+}
+
+trait UUID
+case object UUID
+  extends Validator[String, UUID] {
+
+  def isValid(v: String) =
+    Try { java.util.UUID.fromString(v) }.toOption.isDefined
 }
 
 trait CreditCard
